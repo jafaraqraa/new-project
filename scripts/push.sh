@@ -3,7 +3,7 @@ set -e
 
 BRANCH="main"
 
-# 0) تأكد إنك داخل repo
+# 0) تأكد--------------- إنك داخل repo
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   echo "❌ This folder is not a git repository."
   echo "Run: git init"
