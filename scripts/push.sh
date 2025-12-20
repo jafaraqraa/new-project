@@ -3,31 +3,66 @@ set -e
 
 BRANCH="main"
 
-read -p "Are you sure you want to push changes to '$BRANCH'? (y/n): " choice
-if [[ "$choice" != "y" ]]; then
-  echo "❌ Push cancelled."
+echo "Choose an action:"
+echo "1) Pull (download latest changes)"
+echo "2) Push (commit + upload changes)"
+echo "3) Pull then Push"
+read -p "Enter choice [1-3]: " action
+
+# تأكد إنك على main
+current_branch=$(git branch --show-current)
+if [[ "$current_branch" != "$BRANCH" ]]; then
+  echo "🔁 Switching to $BRANCH"
+  git checkout "$BRANCH"
+fi
+
+# ---------- PULL ----------
+if [[ "$action" == "1" ]]; then
+  echo "⬇️ Pulling from origin/$BRANCH"
+  git pull origin "$BRANCH"
   exit 0
 fi
 
-echo "📝 Enter commit message:"
-read -r commit_message
+# ---------- PUSH ----------
+if [[ "$action" == "2" ]]; then
+  read -p "📝 Enter commit message: " commit_message
+  if [[ -z "$commit_message" ]]; then
+    echo "❌ Commit message cannot be empty"
+    exit 1
+  fi
 
-if [[ -z "$commit_message" ]]; then
-  echo "❌ Commit message cannot be empty."
-  exit 1
-fi
+  git add .
+  if git diff --cached --quiet; then
+    echo "ℹ️ No changes to commit"
+    exit 0
+  fi
 
-git status --short
-git add .
-
-if git diff --cached --quiet; then
-  echo "✅ No changes to commit."
+  git commit -m "$commit_message"
+  git push origin "$BRANCH"
   exit 0
 fi
 
-git commit -m "$commit_message"
+# ---------- PULL + PUSH ----------
+if [[ "$action" == "3" ]]; then
+  echo "⬇️ Pulling first..."
+  git pull origin "$BRANCH"
 
-git pull --rebase origin "$BRANCH"
-git push origin "$BRANCH"
+  read -p "📝 Enter commit message: " commit_message
+  if [[ -z "$commit_message" ]]; then
+    echo "❌ Commit message cannot be empty"
+    exit 1
+  fi
 
-echo "✅ Done."
+  git add .
+  if git diff --cached --quiet; then
+    echo "ℹ️ No changes to commit"
+    exit 0
+  fi
+
+  git commit -m "$commit_message"
+  git push origin "$BRANCH"
+  exit 0
+fi
+
+echo "❌ Invalid choice"
+exit 1
