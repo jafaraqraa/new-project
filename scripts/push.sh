@@ -2,7 +2,11 @@
 set -e
 
 BRANCH="main"
-
+# echo "git fetch origin $BRANCH:"
+# git fetch origin "$BRANCH"
+# git log origin/main
+# echo "-----------------------------------"
+# echo -e "\033[0;32mGit Push/Pull Script\033[0m"
 echo "Choose an action:"
 echo "1) Pull (download latest changes)"
 echo "2) Push (commit + upload changes)"
