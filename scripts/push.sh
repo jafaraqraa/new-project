@@ -6,8 +6,11 @@ if [[ "$choice" != "y" ]]; then
     exit 0
 fi
 
+echo entering message commit  
+read commit_message
 
+  
 
 git add .
-git commit -m "Auto commit"
+git commit -m "$commit_message"
 git push origin main  
