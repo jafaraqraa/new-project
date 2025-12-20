@@ -1,25 +1,33 @@
 #!/bin/bash
+set -e
 
+BRANCH="main"
 
-
-
-read -p "Enter your Git username: " git_username
-git config --global user.name "$git_username"
-read -p "Enter your Git email: " git_email
-git config --global user.email "$git_email"
-echo "Git user configured as $git_username <$git_email>"
-
-read -p "Are you sure you want to push changes to the repository? (y/n): " choice
+read -p "Are you sure you want to push changes to '$BRANCH'? (y/n): " choice
 if [[ "$choice" != "y" ]]; then
-    echo "Push operation cancelled."
-    exit 0
+  echo "❌ Push cancelled."
+  exit 0
 fi
 
-echo entering message commit  
-read commit_message
+echo "📝 Enter commit message:"
+read -r commit_message
 
-  
+if [[ -z "$commit_message" ]]; then
+  echo "❌ Commit message cannot be empty."
+  exit 1
+fi
 
+git status --short
 git add .
+
+if git diff --cached --quiet; then
+  echo "✅ No changes to commit."
+  exit 0
+fi
+
 git commit -m "$commit_message"
-git push origin main  
+
+git pull --rebase origin "$BRANCH"
+git push origin "$BRANCH"
+
+echo "✅ Done."
