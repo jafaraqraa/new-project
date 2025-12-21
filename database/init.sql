@@ -1,10 +1,10 @@
 -- database/init.sql
 
-CREATE DATABASE IF NOT EXISTS restaurant_app
+CREATE DATABASE IF NOT EXISTS restaurant_db
   DEFAULT CHARACTER SET utf8mb4
   DEFAULT COLLATE utf8mb4_unicode_ci;
 
-USE restaurant_app;
+USE restaurant_db;
 
 CREATE TABLE IF NOT EXISTS restaurants (
   id INT AUTO_INCREMENT PRIMARY KEY,
