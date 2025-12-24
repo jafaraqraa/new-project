@@ -1,9 +1,1 @@
-set -e
-cd "$WORKSPACE"
-
- docker rm -f restaurant-db restaurant-web 2>/dev/null || true
-
- docker-compose down --remove-orphans || true
-
- docker-compose up -d --build
-docker ps --format "table {{.Names}}\t{{.Ports}}\t{{.Status}}"
+docker-compose -f docker-compose.yml up -d --build
