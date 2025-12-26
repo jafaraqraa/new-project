@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 BRANCH="main"
  echo "Choose an action:"
