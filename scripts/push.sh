@@ -3,7 +3,7 @@
 echo "enter you'r branch name"
 read  BRANCH_NAME
 
-BRANCH=${BRANCH_NAME}
+BRANCH=$BRANCH_NAME
  echo "Choose an action:"
 echo "1) Pull (download latest changes)"
 echo "2) Push (commit + upload changes)"
